@@ -24,8 +24,10 @@ public class Main {
         graph.printGraph();
 
         Search<String> bfs = new BreadthFirstSearch<>(graph);
-        System.out.println("BFS:");
+        System.out.println("BFS: ");
         bfs.search(vertexA);
+
+        System.out.println();
 
         Search<String> dijkstra = new DijkstraSearch<>(graph);
         System.out.println("Dijkstra:");
