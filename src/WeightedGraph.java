@@ -1,3 +1,4 @@
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.*;
 
 public class WeightedGraph<V> {
@@ -103,5 +104,17 @@ public class WeightedGraph<V> {
             }
         }
         return distances;
+    }
+
+    public void printGraph() {
+        for (Map.Entry<Vertex<V>, List<Vertex<V>>> entry : adjacencyList.entrySet()) {
+            Vertex<V> vertex = entry.getKey();
+            List<Vertex<V>> neighbors = entry.getValue();
+            System.out.print("Vertex " + vertex.getData() + " is connected to: ");
+            for (Vertex<V> neighbor : neighbors) {
+                System.out.print(neighbor.getData() + " ");
+            }
+            System.out.println();
+        }
     }
 }
