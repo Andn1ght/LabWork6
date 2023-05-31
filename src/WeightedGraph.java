@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -7,5 +8,9 @@ public class WeightedGraph<V> {
 
     public WeightedGraph() {
         adjacencyList = new HashMap<>();
+    }
+
+    public void addVertex(Vertex<V> vertex) {
+        adjacencyList.put(vertex, new LinkedList<>());
     }
 }
