@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
+        // Example usage:
         WeightedGraph<String> graph = new WeightedGraph<>();
 
         Vertex<String> vertexA = new Vertex<>("A");
