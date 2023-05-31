@@ -41,4 +41,9 @@ public class WeightedGraph<V> {
 
         return source.getAdjacentVertices().containsKey(destination);
     }
+
+    public List<Vertex<V>> getNeighbors(Vertex<V> vertex) {
+        validateVertex(vertex);
+        return adjacencyList.get(vertex);
+    }
 }
