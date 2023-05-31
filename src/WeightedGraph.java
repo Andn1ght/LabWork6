@@ -18,7 +18,11 @@ public class WeightedGraph<V> {
 
         source.addAdjacentVertex(destination, weight);
         destination.addAdjacentVertex(source, weight);
+
+        adjacencyList.get(source).add(destination);
+        adjacencyList.get(destination).add(source);
     }
+
 
     private void validateVertex(Vertex<V> vertex) {
         if (!adjacencyList.containsKey(vertex))
@@ -46,60 +50,52 @@ public class WeightedGraph<V> {
     }
 
     public void BFS(Vertex<V> start) {
-        validateVertex(start);
         Map<Vertex<V>, Boolean> visited = new HashMap<>();
         for (Vertex<V> vertex : adjacencyList.keySet()) {
             visited.put(vertex, false);
         }
 
         Queue<Vertex<V>> queue = new LinkedList<>();
-        queue.add(start);
         visited.put(start, true);
+        queue.add(start);
 
         while (!queue.isEmpty()) {
-            Vertex<V> currentVertex = queue.poll();
-            System.out.println(currentVertex.getData() + " ");
+            Vertex<V> vertex = queue.poll();
+            System.out.print(vertex.getData() + " ");
 
-            List<Vertex<V>> neighbors = adjacencyList.get(currentVertex);
+            List<Vertex<V>> neighbors = adjacencyList.get(vertex);
             for (Vertex<V> neighbor : neighbors) {
                 if (!visited.get(neighbor)) {
-                    queue.add(neighbor);
                     visited.put(neighbor, true);
+                    queue.add(neighbor);
                 }
             }
         }
-        System.out.println();
     }
 
     public Map<Vertex<V>, Double> Dijkstra(Vertex<V> start) {
-        validateVertex(start);
-
         Map<Vertex<V>, Double> distances = new HashMap<>();
-        Map<Vertex<V>, Vertex<V>> previous = new HashMap<>();
-
-        PriorityQueue<Vertex<V>> queue = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
         for (Vertex<V> vertex : adjacencyList.keySet()) {
             distances.put(vertex, Double.POSITIVE_INFINITY);
-            previous.put(vertex, null);
-            queue.add(vertex);
         }
-
         distances.put(start, 0.0);
 
-        while (!queue.isEmpty()) {
-            Vertex<V> currentVertex = queue.poll();
-            if (distances.get(currentVertex) == Double.POSITIVE_INFINITY) {
-                break;
-            }
+        PriorityQueue<Vertex<V>> priorityQueue = new PriorityQueue<>(Comparator.comparingDouble(distances::get));
+        priorityQueue.add(start);
 
-            List<Vertex<V>> neighbors = adjacencyList.get(currentVertex);
-            for (Vertex<V> neighbor : neighbors) {
-                double newDistance = distances.get(currentVertex) + currentVertex.getAdjacentVertices().get(neighbor);
+        while (!priorityQueue.isEmpty()) {
+            Vertex<V> vertex = priorityQueue.poll();
+            double distance = distances.get(vertex);
+
+            for (Map.Entry<Vertex<V>, Double> entry : vertex.getAdjacentVertices().entrySet()) {
+                Vertex<V> neighbor = entry.getKey();
+                double weight = entry.getValue();
+                double newDistance = distance + weight;
+
                 if (newDistance < distances.get(neighbor)) {
-                    queue.remove(neighbor);
+                    priorityQueue.remove(neighbor);
                     distances.put(neighbor, newDistance);
-                    previous.put(neighbor, currentVertex);
-                    queue.add(neighbor);
+                    priorityQueue.add(neighbor);
                 }
             }
         }
